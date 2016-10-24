@@ -16,9 +16,9 @@ body {font-family:-apple-system-font,Helvetica Neue,Helvetica,sans-serif; border
 </h1>
 <div class="weui-cells">
 <div class="weui-cell">
-<div class="weui-cell__hd"><p>[程度]</p></div>
+<div class="weui-cell__hd"><p>[状态]</p></div>
 <div class="weui-cell__bd"><p>问题</p></div>
-<div class="weui-cell__ft">状态</div>
+<div class="weui-cell__ft">程度</div>
 </div>
 </div>
 %for bug in bugs:
@@ -26,7 +26,7 @@ body {font-family:-apple-system-font,Helvetica Neue,Helvetica,sans-serif; border
 %    if bug[3] != '':
 %        priority = bug[3]
 %    else:
-%        priority = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+%        priority = '未知'
 %   end
 <div class="weui-cell__hd"><p style="color:#999;margin-right:5px;">[{{!priority}}]</p></div>
 <div class="weui-cell__bd"><p>{{bug[1]}}</p></div>
