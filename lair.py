@@ -92,7 +92,7 @@ def new_image():
     return json.dumps('{"filename":"/%s", "id":"%s"}' % (name, rowid))
     
 
-@get('/image/delete/:id')
+@post('/image/delete/:id')
 def delete_image(id = ""):
     if id != "":
         r = db.exec_cmd(conf.def_dbname, 'select bugid, md5 from image where rowid="'+id+'"')[0]

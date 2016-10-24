@@ -56,10 +56,21 @@ pre {background-color: #eee; border: 0px solid #ddd; padding: 5px;}
 <form form method="post" action="" enctype="multipart/form-data">
 <input type="file" name="file" id="newImage" />
 <div id="accessory">
+<script type="text/javascript">
+        function deleteImage(o) {
+            if (confirm("删除此图片?")) {
+            $.post("/image/delete/"+o.value.replace("删除图片-", ""), null, function() {
+                o.parentNode.parentNode.removeChild(o.parentNode);
+                $("#editBug").click();
+            });
+            
+            }
+        };
+</script>
 %for i in image:
-<div>
+<div >
 <img src="/img/{{i[2].encode('utf8')}}" width=200px height=200px />
-<a href="/image/delete/{{str(i[0])}}">删除</a>
+<input type="button" value="删除图片-{{str(i[0])}}" onClick="deleteImage(this)"/> 
 </div>
 <br />
 %end
@@ -100,8 +111,7 @@ $("#accessory").append(
     $("<img />").attr("src", response.filename).attr("width", 200).attr("height", 200)
     );
 $("#accessory").append($("<br />"));
-$("#accessory").append(
-    $("<a />").attr("href", "/image/delete/".concat(response.id)).html("删除")
+$("#accessory").append($("<input />").attr("onClick", "deleteImage(this)").attr("type", "button").attr("value", "删除图片-".concat(response.id)) 
     );
 }
 });
