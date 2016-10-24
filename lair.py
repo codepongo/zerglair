@@ -111,6 +111,14 @@ def send_img(filename = ""):
         return open(filename, "rb").read()
     return ''
 
+@get('/css/:filename')
+def send_css(filename = ""):
+    ''' send any requested file'''
+    if os.path.exists(filename):
+        response.content_type = "text/css"
+        return open(filename, "rb").read()
+    return ''
+
 @get('/js/:filename')
 def send_js(filename = ""):
     ''' send any requested file'''

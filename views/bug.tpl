@@ -5,62 +5,80 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <script src="/js/jquery-1.6.4.min.js"></script>
 <script src="/js/jquery.ajaxfileupload.js"></script>
+<link rel="Stylesheet" type="text/css" href="/css/weui.min.css" />
 <style>
-table{width:100%;table-layout:fixed;empty-cells:show;border-collapse:collapse;}code {white-space:pre-wrap; /* css3.0 <em>/ white-space:-moz-pre-wrap; /</em> Firefox <em>/ white-space:-pre-wrap; /</em> Opera 4-6 <em>/ white-space:-o-pre-wrap; /</em> Opera 7 <em>/ word-wrap:break-word; /</em> Internet Explorer 5.5+ */ }
-th {
-color:white;
-      background-color:gray;
-}
-td {
-    border-color:gray;
-}
-body {background-color: #fff; border: 0px solid #ddd; padding: 15px; margin: 15px;}
-pre {background-color: #eee; border: 0px solid #ddd; padding: 5px;}
+body {font-family:-apple-system-font,Helvetica Neue,Helvetica,sans-serif; border: 0px solid #ddd; padding: 15px; margin: 15px;}
 </style>
 </head>
 <body>
-<div id="container">
-<header>
-<a href="/bug">返回bug列表</a>
-</header>
-<div id="main" role="main">
-<div id="exhibit">
-<h1>{{bug['id']}}-{{bug['title']}}</h1> <input type="button" value="编辑" id="editBug" /> <!-- input type="button" value="删除" id="deleteBug" / -->
-<br />
-程度: {{bug['priority']}}
-<br />
-状态: {{bug['status']}}
-<br />
-描述：
-<br />
+<input class="weui-btn weui-btn_mini weui-btn_default" type="button" value="返回问题列表" id="return" />
+<input class="weui-btn weui-btn_mini weui-btn_primary" type="button" value="编辑" id="editBug" />
+<div class="weui-cells" id="exhibit">
+<div class="weui-cell">
+<label class="weui-label">标题</label>
+{{bug['title']}}
+</div>
+<div class="weui-cell">
+<label class="weui-label">编号</label>
+{{bug['id']}}
+</div>
+<div class="weui-cell">
+<label class="weui-label">程度</label>
+{{bug['priority']}}
+</div>
+<div class="weui-cell">
+<label class="weui-label">状态</label>
+{{bug['status']}}
+</div>
+<div class="weui-cell">
+<label class="weui-label">描述</label>
 {{!bug['description'].replace('\n', '<br />')}}
-<div>
+</div>
 %for i in image:
+<div class="weui-cell">
 <img src="/img/{{i[2].encode('utf8')}}" width=200px height=200px />
+</div>
 %end
 </div>
-</div>
 <div id="edit">
-<h1 id="id">{{bug['id']}}</h1>
-问题：<input type="text" value="{{bug['title']}}" id="title" />
-<br />
-程度：<input type="text" value="{{bug['priority']}}" id="priority"> </input>
-<br />
-状态：<input type="text" value="{{bug['status']}}" id="status"> </input>
-<br />
-<textarea id="description" rows="10" cols="60">{{bug['description']}}</textarea>
-<br />
-<input id="updateBug" type="button" value="保存"/> 
-<input id="cancel" type="button" value="取消"/>
-<br />
-<form form method="post" action="" enctype="multipart/form-data">
-<input type="file" name="file" id="newImage" />
+<div class="weui-cells">
+<div class="weui-cell">
+<div class="weui-cell__hd"><label class="weui-label">编号</label></div><div class="weui-cell__bd" id="id">{{bug['id']}}</div>
+</div>
+<div class="weui-cell">
+<div class="weui-cell__hd"><label class="weui-label">问题</label></div>
+<div class="weui-cell__bd"><input class="weui-input" type="text" value="{{bug['title']}}" id="title"></div>
+</div>
+<div class="weui-cell">
+<div class="weui-cell__hd"><label class="weui-label">程度</label></div>
+<div class="weui-cell__bd"><input class="weui-input" type="text" value="{{bug['priority']}}" id="priority"></div>
+</div>
+<div class="weui-cell">
+<div class="weui-cell__hd"><label class="weui-label">状态</label></div>
+<div class="weui-cell__bd"><input class="weui-input" type="text" value="{{bug['status']}}" id="status"></div>
+</div>
+<div class="weui-cell">
+<div class="weui-cell__hd"><label class="weui-label">状态</label></div>
+<textarea id="description" class="weui-textarea" rows="10">{{bug['description']}}</textarea>
+</div>
+<div class="weui-cell">
+<input class="weui-btn weui-btn_primary" id="updateBug" type="button" value="保存"/> 
+</div>
+<div class="weui-cell">
+<input class="weui-btn weui-btn_default" id="cancel" type="button" value="取消"/>
+</div>
+</div>
+
 <div id="accessory">
+<div class="weui-cells">
+<div class="weui-cell"><div class="weui-uploader__input-box">
+<input class="weui-uploader__input" type="file" name="file" id="newImage" />
+</div></div>
 <script type="text/javascript">
         function deleteImage(o) {
             if (confirm("删除此图片?")) {
-            $.post("/image/delete/"+o.value.replace("删除图片-", ""), null, function() {
-                o.parentNode.parentNode.removeChild(o.parentNode);
+            $.post("/image/delete/"+o.id, null, function() {
+                o.parentNode.parentNode.parentNode.removeChild(o.parentNode.parentNode);
                 $("#editBug").click();
             });
             
@@ -68,17 +86,20 @@ pre {background-color: #eee; border: 0px solid #ddd; padding: 5px;}
         };
 </script>
 %for i in image:
-<div >
-<img src="/img/{{i[2].encode('utf8')}}" width=200px height=200px />
-<input type="button" value="删除图片-{{str(i[0])}}" onClick="deleteImage(this)"/> 
+<div class="weui-cell">
+<div class="weui-cell__bd"><img src="/img/{{i[2].encode('utf8')}}"/></div>
+<div class="weui-cell__ft"><input class="weui-btn weui-btn_warn" type="button" id="{{str(i[0])}}" value="删除图片" onClick="deleteImage(this)"/></div>
 </div>
-<br />
 %end
+</div>
 </div>
 <script type="text/javascript">
 $(document).ready(function() {
         $("#exhibit").show();
         $("#edit").hide();
+        $("#return").click(function() {
+            window.location.href="/bug";
+            });
         $("#editBug").click(function() {
             $("#exhibit").hide();
             $("#edit").show();
@@ -88,6 +109,7 @@ $(document).ready(function() {
             }
             });
         $("#cancel").click(function() {
+            window.location.reload();
             $("#exhibit").show();
             $("#edit").hide();
             });
@@ -107,12 +129,8 @@ action: "/image/new",
 bugid:{{bug['id']}},
 onComplete: function(filename, response) {
 var response = $.parseJSON(response);
-$("#accessory").append(
-    $("<img />").attr("src", response.filename).attr("width", 200).attr("height", 200)
-    );
-$("#accessory").append($("<br />"));
-$("#accessory").append($("<input />").attr("onClick", "deleteImage(this)").attr("type", "button").attr("value", "删除图片-".concat(response.id)) 
-    );
+var node = $("<div />").attr("class", "weui-cell").html("<div class=\"weui-cell__bd\"><img src=\""+response.filename+"\" /></div><div class=\"weui-cell__ft\"><input class=\"weui-btn weui-btn_warn\" type=\"button\" id="+response.id+" value=\"删除图片\" onClick=\"deleteImage(this)\"/></div>");
+$("#accessory").append(node);
 }
 });
 });
@@ -120,6 +138,5 @@ var button = '<input type="button" value="Save" class="saveButton" /> <input typ
 </script>
 <footer>
 </footer>
-</div>
 </body>
 </html>
