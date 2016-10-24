@@ -1,7 +1,7 @@
 <!doctype html>
 <head>
 <meta charset="utf-8" />
-<title>$page_title</title>
+<title>问题</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <script src="/js/jquery-1.6.4.min.js"></script>
 <script src="/js/jquery.ajaxfileupload.js"></script>
@@ -58,9 +58,9 @@ pre {background-color: #eee; border: 0px solid #ddd; padding: 5px;}
 <div id="accessory">
 %for i in image:
 <div>
-<img src="/img/{{i[2].encode('utf8')}}" width=200px height=200px />'
+<img src="/img/{{i[2].encode('utf8')}}" width=200px height=200px />
 <a href="/image/delete/{{str(i[0])}}">删除</a>
-</div>'
+</div>
 <br />
 %end
 </div>

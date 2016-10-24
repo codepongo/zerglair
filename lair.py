@@ -38,49 +38,8 @@ def output(x):
 
 @get('/bug')
 def query_bug():
-    title = ''
-    header = ''
-    body_front = u'''
-<table border=1>
-<tr><th width="70%">问题</th><th>程度</th><th>状态</th></tr>
-'''
-    body_behind = u'''
-<tr id="new_bug_area"><td colspan="3"><input type="button" value="new bug" id="newBug" /></td></tr>
-<tr id="save_bug_area"><td colspan="3"><input type="text" placeholder="Bug Title" id="BugTitle" /><input type="button" value="保存" id="saveBug"/><input type="button" value="取消" id="cancelBug"/></td></tr>
-</table>
-<script type="text/javascript">
-$(document).ready(function(){
-    $("#new_bug_area").show();
-    $("#save_bug_area").hide();
-    $("#newBug").click(function() {
-        $("#new_bug_area").hide();
-        $("#save_bug_area").show();
-        $("#BugTitle").focus();
-    })
-    $("#saveBug").click(function() {
-        var bug = document.getElementById("BugTitle").value
-        if(bug != "") {
-            $.post("/bug/new", bug, function() {
-                window.location.reload();
-            });
-        } else {
-            $("#BugTitle").focus();
-            $("#BugTitle").css('border','1px solid red');
-        }
-    });
-    $("#cancelBug").click(function() {
-        $("#new_bug_area").show();
-        $("#save_bug_area").hide();
-    });
-})
-</script>
-'''
     bugs = db.exec_cmd(conf.def_dbname, 'select rowid, * from bug')
-    idx = 0
-    for bug in bugs:
-        body_front += '<tr><td><a href="/bug/%s">%s</a></td><td>%s</td><td>%s</td></tr>' % bug[:4]
-    template = open('template.html', 'rb').read()
-    return template.replace('$page_title', title).replace('$page_header', header).replace('$page_body', body_front+body_behind)
+    return template('bugs', bugs=bugs)
 
 @post('/bug/update')
 def update_bug():
@@ -115,95 +74,6 @@ def edit_bug(bugid = ""):
     b['description'] = bug[4].encode('utf8')
     return template('bug', bug=b, image=image)
 
-    exhibit = '''
-<div id="exhibit">
-<h1>%d-%s</h1> <input type="button" value="编辑" id="editBug" /> <!-- input type="button" value="删除" id="deleteBug" / -->
-<br />
-程度:%s
-<br />
-状态:%s
-<br />
-%s''' % bug
-    accessory = '<div>'
-    for i in image:
-        accessory += '<img src="/img/'+i[2].encode('utf8') +'" width=200px height=200px />'
-    accessory += '</div>'
-    exhibit = exhibit + accessory + '</div>'
-    b = tuple(field.replace('<br />', '\n') if type(field) == str else field for field in bug)    
-    edit = '''
-<div id="edit">
-<h1 id="id">%d</h1>
-问题：<input type="text" value="%s" id="title" />
-<br />
-程度：<input type="text" value="%s" id="priority"> </input>
-<br />
-状态：<input type="text" value="%s" id="status"> </input>
-<br />
-<textarea id="description" rows="10" cols="60">%s</textarea>
-<br />
-<input id="updateBug" type="button" value="保存"/> 
-<input id="cancel" type="button" value="取消"/>
-<br />
-<form form method="post" action="" enctype="multipart/form-data">
-		<input type="file" name="file" id="newImage" />
-		<div id="accessory">
-''' % bug
-    accessory = '<div>'
-    for i in image:
-        accessory += '<img src="/img/'+i[2].encode('utf8') +'" width=200px height=200px />'
-        accessory += '<a href="/image/delete/'+str(i[0]) +'">删除</a>'
-    accessory += '</div>'
-    edit = edit + accessory + '''		</div>
-	</form>
-</div>'''
-    script = '''
-	<script type="text/javascript">
-		$(document).ready(function() {
-		$("#exhibit").show();
-		$("#edit").hide();
-		$("#editBug").click(function() {
-			$("#exhibit").hide();
-			$("#edit").show();
-		});
-			$("#deleteBug").click(function() {
-				if (confirm("删除此项目?")) {
-				}
-		});
-			$("#cancel").click(function() {
-				$("#exhibit").show();
-				$("#edit").hide();
-			});
-			$("#updateBug").click(function() {
-				$("#edit").hide();
-				var id = $("#id").html();
-				var title = document.getElementById("title").value;
-				var priority= document.getElementById("priority").value;
-				var status = document.getElementById("status").value;
-				var description = $("#description").val();
-				$.post("/bug/update", {"id":id, "title":title, "priority":priority, "status":status, "description":description}, function() {
-                window.location.reload();
-            });
-			});
-			$("#newImage").AjaxFileUpload({
-				action: "/image/new",
-				bugid:%d,
-				onComplete: function(filename, response) {
-					var response = $.parseJSON(response);
-					$("#accessory").append(
-						$("<img />").attr("src", response.filename).attr("width", 200).attr("height", 200)
-					);
-					$("#accessory").append($("<br />"));
-					$("#accessory").append(
-						$("<a />").attr("href", "/image/delete/".concat(response.id)).html("删除")
-					);
-				}
-			});
-		});
-	var button = '<input type="button" value="Save" class="saveButton" /> <input type="button" value="Cancel" class="cancelButton"/>';
-	</script>
-''' % bug[0]
-    xtemplate = open('template.html', 'rb').read()
-    return xtemplate.replace('$page_title', 'edit bug').replace('$page_header', '').replace('$page_body', exhibit+edit+script)
 
 
 @post('/image/new')
