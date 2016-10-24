@@ -1,6 +1,6 @@
 #encoding:utf8
 import conf
-from bottle import route, get, post, request, response, run, _stderr, hook, redirect
+from bottle import route, get, post, request, response, run, _stderr, hook, redirect, template
 import json
 import db
 import datetime
@@ -106,7 +106,14 @@ def edit_bug(bugid = ""):
         bug = db.exec_cmd(conf.def_dbname, 'select rowid, * from bug where rowid='+bugid)[0]
         image = db.exec_cmd(conf.def_dbname, 'select rowid, * from image where bugid='+bugid)
 
-    bug = tuple(field.replace('\n', '<br />').encode('utf8') if type(field) == unicode else field for field in bug)
+
+    b = {}
+    b['id'] = bug[0]
+    b['title'] = bug[1].encode('utf8')
+    b['priority'] = bug[2].encode('utf8')
+    b['status'] = bug[3].encode('utf8')
+    b['description'] = bug[4].encode('utf8')
+    return template('bug', bug=b, image=image)
 
     exhibit = '''
 <div id="exhibit">
@@ -122,7 +129,7 @@ def edit_bug(bugid = ""):
         accessory += '<img src="/img/'+i[2].encode('utf8') +'" width=200px height=200px />'
     accessory += '</div>'
     exhibit = exhibit + accessory + '</div>'
-    bug = tuple(field.replace('<br />', '\n') if type(field) == str else field for field in bug)
+    b = tuple(field.replace('<br />', '\n') if type(field) == str else field for field in bug)    
     edit = '''
 <div id="edit">
 <h1 id="id">%d</h1>
@@ -138,7 +145,6 @@ def edit_bug(bugid = ""):
 <input id="cancel" type="button" value="取消"/>
 <br />
 <form form method="post" action="" enctype="multipart/form-data">
-		<input type="hide" name="bugid" value="" />
 		<input type="file" name="file" id="newImage" />
 		<div id="accessory">
 ''' % bug
@@ -196,8 +202,8 @@ def edit_bug(bugid = ""):
 	var button = '<input type="button" value="Save" class="saveButton" /> <input type="button" value="Cancel" class="cancelButton"/>';
 	</script>
 ''' % bug[0]
-    template = open('template.html', 'rb').read()
-    return template.replace('$page_title', 'edit bug').replace('$page_header', '').replace('$page_body', exhibit+edit+script)
+    xtemplate = open('template.html', 'rb').read()
+    return xtemplate.replace('$page_title', 'edit bug').replace('$page_header', '').replace('$page_body', exhibit+edit+script)
 
 
 @post('/image/new')
