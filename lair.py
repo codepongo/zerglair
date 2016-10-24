@@ -253,5 +253,7 @@ db.exec_cmd(conf.def_dbname, conf.project_table)
 db.exec_cmd(conf.def_dbname, conf.bug_table)
 #db.exec_cmd(conf.def_dbname, conf.wiki_table)
 db.exec_cmd(conf.def_dbname, conf.image_table)
+if not os.path.isdir('img'):
+    os.mkdir('img')
 run(host='localhost', port=8080, debug=True,reload=True)
 
