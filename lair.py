@@ -36,6 +36,12 @@ def output(x):
         x = x.encode('gbk')
     return _stderr(str(x)+'\n')
 
+@get('/')
+@get('/project')
+def query_prj():
+    projects = db.exec_cmd(conf.def_dbname, 'select rowid, * from project')
+    return template('projects', projects=projects)
+
 @get('/bug')
 def query_bug():
     bugs = db.exec_cmd(conf.def_dbname, 'select rowid, * from bug')
