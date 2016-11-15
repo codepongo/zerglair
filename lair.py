@@ -39,13 +39,30 @@ def output(x):
 @get('/')
 @get('/project')
 def query_prj():
-    projects = db.exec_cmd(conf.def_dbname, 'select rowid, * from project')
+    projects = db.exec_cmd(conf.def_dbname, 'select rowid, * from project where recovery=0')
     return template('projects', projects=projects)
+
+@post('/project/new')
+def new_project():
+    title = unicode(request.body.read(), 'utf8')
+    db.exec_cmd(conf.def_dbname, 'insert into project values(?,?)', (title, 0))
+    return ''
 
 @get('/bug')
 def query_bug():
     bugs = db.exec_cmd(conf.def_dbname, 'select rowid, * from bug')
-    return template('bugs', bugs=bugs)
+    return template('bugs', name='', bugs=bugs)
+
+@get('/project/:prjid/bug')
+def query_bug(prjid):
+    project = db.exec_cmd(conf.def_dbname, 'select rowid, name from project where rowid = %s' % (prjid))
+    bugs = db.exec_cmd(conf.def_dbname, 'select rowid, * from bug where project = %s' % (prjid))
+    return template('bugs', project=project[0], bugs=bugs)
+
+@post('/project/:projectid/delete')
+def delete_project(projectid):
+    db.exec_cmd(conf.def_dbname, 'update project set recovery=1 where rowid=?', (projectid))
+
 
 @post('/bug/update')
 def update_bug():

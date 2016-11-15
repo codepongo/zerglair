@@ -12,7 +12,8 @@ body {font-family:-apple-system-font,Helvetica Neue,Helvetica,sans-serif; border
 </head>
 <body>
 <h1>
-问题列表
+{{project[1]}}  问题列表
+<input class="weui-btn weui-btn_mini weui-btn_warn" type="button" value="删除" id="deleteProject">
 </h1>
 <div class="weui-cells">
 <div class="weui-cell">
@@ -66,6 +67,13 @@ $(document).ready(function(){
         $("#cancelBug").click(function() {
             $("#new_bug_area").show();
             $("#save_bug_area").hide();
+            });
+        $("#deleteProject").click(function() {
+            if (confirm("删除此项目?")) {
+            $.post("/project/"+{{project[0]}}+"/delete", null, function() {
+                window.location.href = "/";
+            });
+            }
             });
 })
 </script>

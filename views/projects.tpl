@@ -19,10 +19,13 @@ body {font-family:-apple-system-font,Helvetica Neue,Helvetica,sans-serif; border
 <div class="weui-cell__bd"><p>项目</p></div>
 </div>
 </div>
-%for project in projects:
-<a class="weui-cell weui-cell_access" href="/project/{{project[0]}}">
+%if projects != None:
+%   for project in projects:
+<a class="weui-cell weui-cell_access" href="/project/{{project[0]}}/bug">
 <div class="weui-cell__bd"><p>{{project[1]}}</p></div>
+<div class="weui-cell__ft"></div>
 </a>
+%   end
 %end
 <div id="save_project_area" class="weui-cell">
 <div class="weui-cell__bd"><input id="new_project_title" class="weui-input" type="text" placeholder="请输入问题名称"></div>
@@ -32,7 +35,7 @@ body {font-family:-apple-system-font,Helvetica Neue,Helvetica,sans-serif; border
 </div>
 </div>
 <div id="new_project_area">
-<input class="weui-btn weui-btn_primary" type="button" value="新建问题" id="newBug" />
+<input class="weui-btn weui-btn_primary" type="button" value="新建项目" id="newBug" />
 </div>
 <script type="text/javascript">
 $(document).ready(function(){
