@@ -45,7 +45,13 @@ def query_prj():
 @post('/project/new')
 def new_project():
     title = unicode(request.body.read(), 'utf8')
-    db.exec_cmd(conf.def_dbname, 'insert into project values(?,?)', (title, 0))
+    prj = db.exec_cmd(conf.def_dbname, 'select rowid, * from project where name="%s"' % (title))
+    output(prj)
+    
+    if prj != None and len(prj) != 0:
+        db.exec_cmd(conf.def_dbname, 'update project set recovery=0 where name=?', (title, ))
+    else:
+        db.exec_cmd(conf.def_dbname, 'insert into project values(?,?)', (title, 0))
     return ''
 
 @get('/bug')
@@ -61,7 +67,7 @@ def query_bug(prjid):
 
 @post('/project/:projectid/delete')
 def delete_project(projectid):
-    db.exec_cmd(conf.def_dbname, 'update project set recovery=1 where rowid=?', (projectid))
+    db.exec_cmd(conf.def_dbname, 'update project set recovery=1 where rowid=?', (projectid, ))
 
 
 @post('/bug/update')
