@@ -12,7 +12,7 @@ body {font-family:-apple-system-font,Helvetica Neue,Helvetica,sans-serif; border
 </head>
 <body>
 <h1>
-<input class="weui-btn weui-btn_mini weui-btn_default" type="button" value="返回问题列表" id="return" />
+<input class="weui-btn weui-btn_mini weui-btn_default" type="button" value="返回项目列表" id="return" />
 {{project[1]}}  问题列表
 <input class="weui-btn weui-btn_mini weui-btn_warn" type="button" value="删除" id="deleteProject">
 </h1>
@@ -75,6 +75,9 @@ $(document).ready(function(){
                 window.location.href = "/";
             });
             }
+            });
+        $("#return").click(function() {
+            window.location.href="/project";
             });
 })
 </script>

@@ -101,6 +101,7 @@ def edit_bug(bugid = ""):
     b['priority'] = bug[2].encode('utf8')
     b['status'] = bug[3].encode('utf8')
     b['description'] = bug[4].encode('utf8')
+    b['project'] = bug[5]
     return template('bug', bug=b, image=image)
 
 

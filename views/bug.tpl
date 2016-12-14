@@ -98,7 +98,7 @@ $(document).ready(function() {
         $("#exhibit").show();
         $("#edit").hide();
         $("#return").click(function() {
-            window.location.href="/bugs/{{bug['project']}}";
+            window.location.href="/project/{{bug['project']}}/bug";
             });
         $("#editBug").click(function() {
             $("#exhibit").hide();
