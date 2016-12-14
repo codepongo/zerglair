@@ -39,7 +39,7 @@ def output(x):
 @get('/')
 @get('/project')
 def query_prj():
-    projects = db.exec_cmd(conf.def_dbname, 'select rowid, * from project where recovery=0')
+    projects = db.exec_cmd(conf.def_dbname, 'select rowid, * from project where recovery=0 order by datetime')
     return template('projects', projects=projects)
 
 @post('/project/new')
@@ -49,9 +49,9 @@ def new_project():
     output(prj)
     
     if prj != None and len(prj) != 0:
-        db.exec_cmd(conf.def_dbname, 'update project set recovery=0 where name=?', (title, ))
+        db.exec_cmd(conf.def_dbname, 'update project set recovery=0, datetime=strftime("%Y%m%d%H%M%s", "now") where name=?', (title, ))
     else:
-        db.exec_cmd(conf.def_dbname, 'insert into project values(?,?)', (title, 0))
+        db.exec_cmd(conf.def_dbname, 'insert into project values(?,?, ?)', (title, 0, strftime('%Y%m%d%H%M%S', "now")))
     return ''
 
 @get('/bug')
