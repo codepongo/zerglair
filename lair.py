@@ -51,7 +51,7 @@ def new_project():
     if prj != None and len(prj) != 0:
         db.exec_cmd(conf.def_dbname, 'update project set recovery=0, datetime=strftime("%Y%m%d%H%M%s", "now") where name=?', (title, ))
     else:
-        db.exec_cmd(conf.def_dbname, 'insert into project values(?,?, ?)', (title, 0, strftime('%Y%m%d%H%M%S', "now")))
+        db.exec_cmd(conf.def_dbname, 'insert into project values(?,?,?)', (title, 0, 'strftime("%Y%m%d%H%M%S", "now")'))
     return ''
 
 @get('/bug')
