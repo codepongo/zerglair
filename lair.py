@@ -56,8 +56,14 @@ def new_project():
 
 @get('/bug')
 def query_bug():
-    bugs = db.exec_cmd(conf.def_dbname, 'select rowid, * from bug')
-    return template('bugs', name='', bugs=bugs)
+    sql = 'select rowid, * from bug'
+    prjid = request.GET.get('prjid', '')
+    project = (None, '')
+    if prjid != '':
+        sql += ' where project=%s' % (prjid)
+        project = db.exec_cmd(conf.def_dbname, 'select rowid, name from project where rowid = %s' % (prjid))[0]
+    bugs = db.exec_cmd(conf.def_dbname, sql)
+    return template('bugs', project=project, bugs=bugs)
 
 @get('/project/:prjid/bug')
 def query_bug(prjid):
@@ -83,8 +89,9 @@ def update_bug():
 
 @post('/bug/new')
 def new_bug():
-    title = unicode(request.body.read(), 'utf8')
-    db.exec_cmd(conf.def_dbname, 'insert into bug values(?,?,?,?)', (title, '', u'新建', u"请加入问题的详细描述。 \n\n有效的问题描述包括三方面内容： \n\n* 产生步骤 \n\n* 期望结果 \n\n* 实际结果\n\n"))
+    title = unicode(request.forms.get('bug'), 'utf8')
+    project = unicode(request.forms.get('project'), 'utf8')
+    db.exec_cmd(conf.def_dbname, 'insert into bug values(?,?,?,?,?)', (title, '', u'新建', u"请加入问题的详细描述。 \n\n有效的问题描述包括三方面内容： \n\n* 产生步骤 \n\n* 期望结果 \n\n* 实际结果\n\n", project))
     return ''
 
 @get('/bug/:bugid')

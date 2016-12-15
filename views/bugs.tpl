@@ -57,7 +57,7 @@ $(document).ready(function(){
         $("#saveBug").click(function() {
             var bug = document.getElementById("new_bug_title").value
             if(bug != "") {
-            $.post("/bug/new", bug, function() {
+            $.post("/bug/new", {'project':{{project[0]}},'bug':bug}, function() {
                 window.location.reload();
                 });
             } else {

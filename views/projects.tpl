@@ -21,7 +21,7 @@ body {font-family:-apple-system-font,Helvetica Neue,Helvetica,sans-serif; border
 </div>
 %if projects != None:
 %   for project in projects:
-<a class="weui-cell weui-cell_access" href="/project/{{project[0]}}/bug">
+<a class="weui-cell weui-cell_access" href="/bug?prjid={{project[0]}}">
 <div class="weui-cell__bd"><p>{{project[1]}}</p></div>
 <div class="weui-cell__ft"></div>
 </a>

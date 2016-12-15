@@ -12,4 +12,5 @@ import conf
 #print db.exec_cmd(conf.def_dbname, 'update project set recovery=0')
 #print db.exec_cmd(conf.def_dbname, 'select * from project')
 #print db.exec_cmd(conf.def_dbname, 'alter table project add column datetime text')
-print db.exec_cmd(conf.def_dbname, 'select * from sqlite_master')
+#print db.exec_cmd(conf.def_dbname, 'select * from sqlite_master')
+print db.exec_cmd(conf.def_dbname, 'select rowid, * from bug where project=1')
