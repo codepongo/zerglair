@@ -13,4 +13,7 @@ import conf
 #print db.exec_cmd(conf.def_dbname, 'select * from project')
 #print db.exec_cmd(conf.def_dbname, 'alter table project add column datetime text')
 #print db.exec_cmd(conf.def_dbname, 'select * from sqlite_master')
-print db.exec_cmd(conf.def_dbname, 'select rowid, * from bug where project=1')
+#print db.exec_cmd('lair_.db', 'alter table bug rename to bug_t')
+#print db.exec_cmd('lair_.db', conf.bug_table)
+#print db.exec_cmd('lair_.db', 'insert into bug select * from bug_t')
+#print db.exec_cmd('lair_.db', 'drop table bug_t')
