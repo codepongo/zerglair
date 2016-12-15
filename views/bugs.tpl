@@ -23,17 +23,19 @@ body {font-family:-apple-system-font,Helvetica Neue,Helvetica,sans-serif; border
 <div class="weui-cell__ft">程度</div>
 </div>
 </div>
-%for bug in bugs:
+%if bugs != None:
+%   for bug in bugs:
 <a class="weui-cell weui-cell_access" href="/bug/{{bug[0]}}">
-%    if bug[3] != '':
-%        priority = bug[3]
-%    else:
-%        priority = '未知'
-%   end
+%       if bug[3] != '':
+%           priority = bug[3]
+%       else:
+%           priority = '未知'
+%       end
 <div class="weui-cell__hd"><p style="color:#999;margin-right:5px;">[{{!priority}}]</p></div>
 <div class="weui-cell__bd"><p>{{bug[1]}}</p></div>
 <div class="weui-cell__ft">{{bug[2]}}</div>
 </a>
+%   end
 %end
 <div id="save_bug_area" class="weui-cell">
 <div class="weui-cell__bd"><input id="new_bug_title" class="weui-input" type="text" placeholder="请输入问题名称"></div>
