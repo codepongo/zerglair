@@ -10,6 +10,7 @@ import sys
 import os
 import hashlib
 import shutil
+import datetime
 
 
 @hook('before_request')
@@ -49,9 +50,9 @@ def new_project():
     output(prj)
     
     if prj != None and len(prj) != 0:
-        db.exec_cmd(conf.def_dbname, 'update project set recovery=0, datetime=strftime("%Y%m%d%H%M%s", "now") where name=?', (title, ))
+        db.exec_cmd(conf.def_dbname, 'update project set recovery=0, datetime=? where name=?', (datetime.datetime.now().strftime("%Y%m%d%H%M%S"), title))
     else:
-        db.exec_cmd(conf.def_dbname, 'insert into project values(?,?,?)', (title, 0, 'strftime("%Y%m%d%H%M%S", "now")'))
+        db.exec_cmd(conf.def_dbname, 'insert into project values(?,?,?)', (title, 0, datetime.datetime.now().strftime("%Y%m%d%H%M%S")))
     return ''
 
 @get('/bug')
@@ -60,7 +61,7 @@ def query_bug():
     prjid = request.GET.get('prjid', '')
     project = (None, '')
     if prjid != '':
-        sql += ' where project=%s' % (prjid)
+        sql += ' where projectid=%s' % (prjid)
         project = db.exec_cmd(conf.def_dbname, 'select rowid, name from project where rowid = %s' % (prjid))[0]
     bugs = db.exec_cmd(conf.def_dbname, sql)
     return template('bugs', project=project, bugs=bugs)

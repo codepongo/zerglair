@@ -98,7 +98,7 @@ $(document).ready(function() {
         $("#exhibit").show();
         $("#edit").hide();
         $("#return").click(function() {
-            window.location.href="/project/{{bug['project']}}/bug";
+            window.location.href="/bug?prjid={{bug['project']}}";
             });
         $("#editBug").click(function() {
             $("#exhibit").hide();
