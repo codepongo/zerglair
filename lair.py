@@ -106,6 +106,7 @@ def update_bug():
     bug['status'] = unicode(request.forms.get('status'), 'utf8')
     bug['description'] = unicode(request.forms.get('description'), 'utf8')
     bug['rowid'] = unicode(request.forms.get('id'), 'utf8')
+    output(bug)
     db.exec_cmd(conf.def_dbname, 'update bug set name=?, priority=?, status=?, description=? where rowid=?', (bug['title'], bug['priority'], bug['status'], bug['description'], bug['rowid']))
 
 @post('/bug/new')
@@ -126,9 +127,9 @@ def edit_bug(bugid = ""):
     b = {}
     b['id'] = bug[0]
     b['title'] = bug[1].encode('utf8')
-    b['priority'] = bug[2].encode('utf8')
-    b['status'] = bug[3].encode('utf8')
-    b['description'] = bug[4].encode('utf8')
+    b['description'] = bug[2].encode('utf8')
+    b['priority'] = bug[3].encode('utf8')
+    b['status'] = bug[4].encode('utf8')
     b['project'] = bug[5]
     return template('bug', bug=b, image=image)
 

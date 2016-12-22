@@ -27,14 +27,14 @@ body {font-family:-apple-system-font,Helvetica Neue,Helvetica,sans-serif; border
 %if bugs != None:
 %   for bug in bugs:
 <a class="weui-cell weui-cell_access" href="/bug/{{bug[0]}}">
-%       if bug[3] != '':
-%           priority = bug[3]
+%       if bug[4] != '':
+%           priority = bug[4]
 %       else:
 %           priority = '未知'
 %       end
 <div class="weui-cell__hd"><p style="color:#999;margin-right:5px;">[{{!priority}}]</p></div>
 <div class="weui-cell__bd"><p>{{bug[1]}}</p></div>
-<div class="weui-cell__ft">{{bug[2]}}</div>
+<div class="weui-cell__ft">{{bug[3]}}</div>
 </a>
 %   end
 %end

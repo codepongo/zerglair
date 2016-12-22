@@ -58,7 +58,7 @@ body {font-family:-apple-system-font,Helvetica Neue,Helvetica,sans-serif; border
 <div class="weui-cell__bd"><input class="weui-input" type="text" value="{{bug['status']}}" id="status"></div>
 </div>
 <div class="weui-cell">
-<div class="weui-cell__hd"><label class="weui-label">状态</label></div>
+<div class="weui-cell__hd"><label class="weui-label">描述</label></div>
 <textarea id="description" class="weui-textarea" rows="10">{{bug['description']}}</textarea>
 </div>
 <div class="weui-cell">
