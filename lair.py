@@ -1,5 +1,6 @@
 #encoding:utf8
 import conf
+import bottle
 from bottle import route, get, post, request, response, run, _stderr, hook, redirect, template
 import json
 import db
@@ -11,6 +12,7 @@ import os
 import hashlib
 import shutil
 import datetime
+import xlwt
 
 
 @hook('before_request')
@@ -76,6 +78,24 @@ def query_bug(prjid):
 def delete_project(projectid):
     db.exec_cmd(conf.def_dbname, 'update project set recovery=1 where rowid=?', (projectid, ))
 
+@get('/project/:projectid/export')
+def save_as_excel(projectid):
+    project = db.exec_cmd(conf.def_dbname, 'select rowid, name from project where rowid = %s' % (projectid))
+    bugs = db.exec_cmd(conf.def_dbname, 'select rowid, * from bug where projectid = %s' % (projectid))    
+    date_style = xlwt.easyxf(num_format_str='YYYY-MM-DD')
+    wb = xlwt.Workbook()
+    ws = wb.add_sheet(u'问题列表')
+    ws.write(0, 0, u'编码');
+    ws.write(0, 1, u'标题');
+    ws.write(0, 2, u'程度');
+    ws.write(0, 3, u'状态');
+    ws.write(0, 4, u'描述');
+    for j in range(0, len(bugs)):
+        for i in range(0, len(bugs[j])-1):
+            ws.write(j+1, i, bugs[j][i])
+    name = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+    wb.save('export/%s.xls' % (name))
+    return bottle.static_file(name+'.xls', root='export')
 
 @post('/bug/update')
 def update_bug():
@@ -165,6 +185,8 @@ def send_js(filename = ""):
         return open(filename, "rb").read()
     return ''
 
+if not os.path.isdir('export'):
+    os.mkdir('export')
 db.exec_cmd(conf.def_dbname, conf.project_table)
 db.exec_cmd(conf.def_dbname, conf.bug_table)
 #db.exec_cmd(conf.def_dbname, conf.wiki_table)
