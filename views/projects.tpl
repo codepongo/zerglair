@@ -3,21 +3,19 @@
 <meta charset="utf-8" />
 <title>项目</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="Stylesheet" type="text/css" href="/css/mobi.css" />
 <link rel="Stylesheet" type="text/css" href="/css/weui.min.css" />
 <script src="/js/jquery-1.6.4.min.js"></script>
 <script src="/js/jquery.ajaxfileupload.js"></script>
-<style>
-body {font-family:-apple-system-font,Helvetica Neue,Helvetica,sans-serif; border: 0px solid #ddd; padding: 15px; margin: 15px;}
-</style>
 </head>
 <body>
-<h1>
+<div class="flex-center">
+<div class="container">
+<h1 class="flex-center flex-middle">
 项目列表
 </h1>
-<div class="weui-cells">
 <div class="weui-cell">
-<div class="weui-cell__bd"><p>项目</p></div>
-</div>
+项目
 </div>
 %if projects != None:
 %   for project in projects:
@@ -27,12 +25,12 @@ body {font-family:-apple-system-font,Helvetica Neue,Helvetica,sans-serif; border
 </a>
 %   end
 %end
-<div id="save_project_area" class="weui-cell">
-<div class="weui-cell__bd"><input id="new_project_title" class="weui-input" type="text" placeholder="请输入问题名称"></div>
-<div class="weui-cell__ft">
-<input class="weui-btn weui-btn_mini weui-btn_primary" type="button" value="保存" id="saveBug"/>
-<input class="weui-btn weui-btn_mini weui-btn_default" type="button" value="取消" id="cancelBug"/>
+<div id="save_project_area" class="weui-cell flex-left units-gap">
+<div class="unit-3-4">
+<input id="new_project_title" class="weui-input" type="text" placeholder="请输入问题名称">
 </div>
+<div class="unit"><input class="weui-btn weui-btn_primary" type="button" value="保存" id="saveBug"/></div>
+<div class="unit"><input class="weui-btn weui-btn_default" type="button" value="取消" id="cancelBug"/></div>
 </div>
 <div id="new_project_area">
 <input class="weui-btn weui-btn_primary" type="button" value="新建项目" id="newBug" />
@@ -65,6 +63,11 @@ $(document).ready(function(){
 </script>
 <footer>
 </footer>
+</div>
+<aside class="hide-on-mobile" style="padding:0 28px">
+<p>adv</p>
+</aside>
+</div>
 </body>
 </html>
 
