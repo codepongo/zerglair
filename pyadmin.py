@@ -36,4 +36,6 @@ import conf
 
 
 ### delete test bug item ###
-print db.exec_cmd(conf.def_dbname, 'delete from bug where rowid=39')
+#print db.exec_cmd(conf.def_dbname, 'delete from bug where rowid=39')
+print db.exec_cmd(conf.def_dbname, 'delete from project where name="abc"')
+print db.exec_cmd(conf.def_dbname, 'delete from project where name="test"')
