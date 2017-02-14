@@ -28,8 +28,12 @@ import conf
 #print db.exec_cmd(conf.def_dbname, 'select name, status, description, priority, projectid from bug where rowid=10')
 
 ### fix the bug table's field ###
-print db.exec_cmd(conf.def_dbname, 'alter table bug rename to bug_t')
-print db.exec_cmd(conf.def_dbname, conf.bug_table)
-print db.exec_cmd(conf.def_dbname, 'insert into bug select name, status, priority, description, projectid from bug_t')
-print db.exec_cmd(conf.def_dbname, 'drop table bug_t')
+#print db.exec_cmd(conf.def_dbname, 'alter table bug rename to bug_t')
+#print db.exec_cmd(conf.def_dbname, conf.bug_table)
+#print db.exec_cmd(conf.def_dbname, 'insert into bug select name, status, priority, description, projectid from bug_t')
+#print db.exec_cmd(conf.def_dbname, 'drop table bug_t')
 ###
+
+
+### delete test bug item ###
+print db.exec_cmd(conf.def_dbname, 'delete from bug where rowid=39')
