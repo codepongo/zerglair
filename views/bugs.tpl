@@ -38,12 +38,10 @@ body {font-family:-apple-system-font,Helvetica Neue,Helvetica,sans-serif; border
 </a>
 %   end
 %end
-<div id="save_bug_area" class="weui-cell">
-<div class="weui-cell__bd"><input id="new_bug_title" class="weui-input" type="text" placeholder="请输入问题名称"></div>
-<div class="weui-cell__ft">
-<input class="weui-btn weui-btn_mini weui-btn_primary" type="button" value="保存" id="saveBug"/>
-<input class="weui-btn weui-btn_mini weui-btn_default" type="button" value="取消" id="cancelBug"/>
-</div>
+<div id="save_bug_area">
+<input id="new_bug_title" class="weui-input" type="text" placeholder="请输入问题名称">
+<input style="margin-top:5px" class="weui-btn weui-btn_primary" type="button" value="保存" id="saveBug"/>
+<a style="margin-top:5px" class="weui-btn weui-btn_default" id="cancelBug">取消</a>
 </div>
 <div id="new_bug_area">
 <input class="weui-btn weui-btn_primary" type="button" value="新建问题" id="newBug" />

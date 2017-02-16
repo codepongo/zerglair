@@ -25,12 +25,10 @@
 </a>
 %   end
 %end
-<div id="save_project_area" class="weui-cell flex-left units-gap">
-<div class="unit-3-4">
+<div id="save_project_area">
 <input id="new_project_title" class="weui-input" type="text" placeholder="请输入问题名称">
-</div>
-<div class="unit"><input class="weui-btn weui-btn_primary" type="button" value="保存" id="saveBug"/></div>
-<div class="unit"><input class="weui-btn weui-btn_default" type="button" value="取消" id="cancelBug"/></div>
+<input style="margin-top:5px" class="weui-btn weui-btn_primary" type="button" value="保存" id="saveBug"/>
+<a style="margin-top:5px" class="weui-btn weui-btn_default" id="cancelBug">取消</a>
 </div>
 <div id="new_project_area">
 <input class="weui-btn weui-btn_primary" type="button" value="新建项目" id="newBug" />
